@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micropython C Generator</title>
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="css/prism.css"  />
+    <link rel="stylesheet" type="text/css" href="css/mcg.css" />
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/jquery.scrollTo.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="js/mcg.js"></script>
+</head>
+<body>
+    <div class="container header">
+        <h2>RT-Thread MicroPython C 绑定自动生成器</h2>
+        <p>
+            Powered by <a href="https://www.rt-thread.org/document/site/submodules/micropython/docs/introduction/">RT-Thread MicroPython</a>.
+        </p>
+    </div>
+    <div class="container body-content">
+        <div class="input-form">
+            <fieldset class="u-full-width">
+                <div class="three columns">
+                    <label for="functionName">函数名</label>
+                    <input class="u-full-width" type="text" id="functionName" value="my_function" />
+                </div>
+                <div class="three columns">
+                    <label for="outputType">选择函数输出参数类型</label>
+                    <select class="u-full-width" id="outputType">
+                        <option value="void">None</option>
+                        <option value="bool">Boolean</option>
+                        <option value="int">Integer</option>
+                        <option value="float">Float</option>
+                        <option value="string">String</option>
+                        <option value="bytes">Bytes</option>
+                        <option value="tuple">Tuple</option>
+                        <option value="list">List</option>
+                        <option value="dict">Dictionary</option>
+                    </select>
+                </div>
+                <div class="three columns">
+                    <label for="outputName">输出参数名称</label>
+                    <input class="u-full-width" type="text" id="outputName" value="ret_val" />
+                </div>
+                <div class="three columns">
+                    <label for="numInputs">输入参数数量</label>
+                    <input class="u-full-width" type="number" id="numInputs" value="0" min="0" max="10" />
+                </div>
+                <div class="inputsArea"></div>
+            </fieldset>
+            <fieldset class="u-full-width">
+                <div class="three columns">
+                    <input type="checkbox" id="showExamples" value="Examples">
+                    <span class="label-body" id="showExamplesLabel">在生成代码中添加示例程序</span>
+                </div>
+                <div class="three columns"><p></p></div>
+                <div class="three columns">
+                    <input class="button-primary u-full-width" type="button" id="generateCode" value="点击自动生成 C 绑定" />
+                </div>
+                <div class="three columns">
+                    <input class="button-primary u-full-width" type="button" id="copyCode" value="点击复制代码" />
+                </div>
+            </fieldset>
+        </div>
+        <div class="u-full-width">
+            <label for="codeOutput">Output</label>
+            <pre><code class="language-c" id="codeOutput"></code></pre>
+        </div>
+    </div>
+    <div class="container footer">
+        <footer>
+            <hr>
+            <p>&copy; 2019 - RT-Thread</p>
+            <p>
+                更多说明文档请参考 <a href="https://www.rt-thread.org/document/site/submodules/micropython/docs/introduction/">RT-Thread 文档中心 MicroPython 版块</a>。
+            </p>
+        </footer>
+    </div>
+</body>
