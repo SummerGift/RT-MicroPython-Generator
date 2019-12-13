@@ -275,7 +275,6 @@ function generateCode() {
     }
 
     // User code section
-    outputCode += '\n';
     outputCode += INDENT+'/* Your code start! */\n';
     outputCode += '\n';
     outputCode += INDENT+'/* Your code end! */\n';
