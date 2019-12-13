@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Micropython C Generator</title>
+    <meta name="keywords" content="MicroPython, c, python, RT-Thread">
+    <title>RT-Thread Micropython C Generator</title>
     <link rel="shortcut icon" href="images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/skeleton.css" />
@@ -13,15 +14,30 @@
     <script src="js/jquery.scrollTo.js"></script>
     <script src="js/prism.js"></script>
     <script src="js/mcg.js"></script>
+    <style>
+        p.none {border-style:none;}
+        p.dotted {border-style:dotted;}
+        p.dashed {border-style:dashed;}
+        p.solid {border-style:solid;}
+        p.double {border-style:double;}
+        p.groove {border-style:groove;}
+        p.ridge {border-style:ridge;}
+        p.inset {border-style:inset;}
+        p.outset {border-style:outset;}
+        p.hidden {border-style:hidden;}
+    </style>
 </head>
 <body>
     <div class="container header">
-        <h2>RT-Thread MicroPython C 绑定代码自动生成器</h2>
+        <h2 style="text-align:center;">RT-Thread MicroPython C 绑定代码自动生成器</h2>
         <p>
             <!-- <hr> -->
         </p>
 
     </div>
+
+    <!-- <p class="inset">嵌入边框。</p> -->
+
     <div class="container body-content">
         <div class="input-form">
             <fieldset class="u-full-width">
@@ -56,7 +72,7 @@
             <fieldset class="u-full-width">
                 <div class="three columns">
                     <input type="checkbox" id="showExamples" value="Examples">
-                    <span class="label-body" id="showExamplesLabel">在生成代码中添加示例程序</span>
+                    <span class="label-body" id="showExamplesLabel">添加提示代码</span>
                 </div>
                 <div class="three columns"><p></p></div>
                 <div class="three columns">
