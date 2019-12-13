@@ -275,7 +275,10 @@ function generateCode() {
     }
 
     // User code section
-    outputCode += INDENT+'// Your code here!\n';
+    outputCode += '\n';
+    outputCode += INDENT+'/* Your code start! */\n';
+    outputCode += '\n';
+    outputCode += INDENT+'/* Your code end! */\n';
     outputCode += '\n';
 
     // Example exception
