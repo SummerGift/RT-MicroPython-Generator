@@ -16,10 +16,11 @@
 </head>
 <body>
     <div class="container header">
-        <h2>RT-Thread MicroPython C 绑定自动生成器</h2>
+        <h2>RT-Thread MicroPython C 绑定代码自动生成器</h2>
         <p>
-            Powered by <a href="https://www.rt-thread.org/document/site/submodules/micropython/docs/introduction/">RT-Thread MicroPython</a>.
+            <!-- <hr> -->
         </p>
+
     </div>
     <div class="container body-content">
         <div class="input-form">
@@ -29,21 +30,21 @@
                     <input class="u-full-width" type="text" id="functionName" value="my_function" />
                 </div>
                 <div class="three columns">
-                    <label for="outputType">选择函数输出参数类型</label>
+                    <label for="outputType">函数返回值类型</label>
                     <select class="u-full-width" id="outputType">
-                        <option value="void">None</option>
-                        <option value="bool">Boolean</option>
-                        <option value="int">Integer</option>
-                        <option value="float">Float</option>
-                        <option value="string">String</option>
-                        <option value="bytes">Bytes</option>
-                        <option value="tuple">Tuple</option>
-                        <option value="list">List</option>
-                        <option value="dict">Dictionary</option>
+                        <option value="void">空类型--->None      </option>
+                        <option value="bool">布尔类型--->Boolean   </option>
+                        <option value="int">整数类型--->Integer    </option>
+                        <option value="float">浮点数--->Float    </option>
+                        <option value="string">字符串类型--->String   </option>
+                        <option value="bytes">字节类型--->Bytes    </option>
+                        <option value="tuple">元组类型--->Tuple    </option>
+                        <option value="list">列表类型--->List      </option>
+                        <option value="dict">字典类型--->Dictionary  </option>
                     </select>
                 </div>
                 <div class="three columns">
-                    <label for="outputName">输出参数名称</label>
+                    <label for="outputName">函数返回值名称</label>
                     <input class="u-full-width" type="text" id="outputName" value="ret_val" />
                 </div>
                 <div class="three columns">
@@ -59,13 +60,14 @@
                 </div>
                 <div class="three columns"><p></p></div>
                 <div class="three columns">
-                    <input class="button-primary u-full-width" type="button" id="generateCode" value="点击自动生成 C 绑定" />
+                    <input class="button-primary u-full-width" type="button" id="generateCode" value="点击生成 C 绑定代码" />
                 </div>
                 <div class="three columns">
                     <input class="button-primary u-full-width" type="button" id="copyCode" value="点击复制代码" />
                 </div>
             </fieldset>
         </div>
+        <hr>
         <div class="u-full-width">
             <label for="codeOutput">Output</label>
             <pre><code class="language-c" id="codeOutput"></code></pre>
@@ -74,9 +76,9 @@
     <div class="container footer">
         <footer>
             <hr>
-            <p>&copy; 2019 - RT-Thread</p>
+            <p>&copy; 2019 - <a href="https://github.com/SummerGGift">我夏了夏天</a></p>
             <p>
-                更多说明文档请参考 <a href="https://www.rt-thread.org/document/site/submodules/micropython/docs/introduction/">RT-Thread 文档中心 MicroPython 版块</a>。
+                Powered by <a href="https://www.rt-thread.org/document/site/submodules/micropython/docs/introduction/">RT-Thread MicroPython</a>
             </p>
         </footer>
     </div>
