@@ -114,7 +114,7 @@ function getFormDict() {
 
     // Get output data
     outDict['output'] = {
-        'name': "ret_val",
+        'name': $('#outputName')[0].value,
         'type': $('#outputType')[0].value
     }
     valid = checkArgName(outDict['output']['name']);
