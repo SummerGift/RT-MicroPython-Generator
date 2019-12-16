@@ -15,30 +15,16 @@
     <script src="js/prism.js"></script>
     <script src="js/mcg.js"></script>
     <style>
-        p.none {border-style:none;}
-        p.dotted {border-style:dotted;}
-        p.dashed {border-style:dashed;}
-        p.solid {border-style:solid;}
-        p.double {border-style:double;}
-        p.groove {border-style:groove;}
-        p.ridge {border-style:ridge;}
-        p.inset {border-style:inset;}
-        p.outset {border-style:outset;}
-        p.hidden {border-style:hidden;}
+ 
     </style>
 </head>
 <body>
     <div class="container header">
         <h2 style="text-align:center;">RT-Thread MicroPython C 绑定代码自动生成器</h2>
-        <p>
-            <!-- <hr> -->
-        </p>
-
     </div>
 
-    <!-- <p class="inset">嵌入边框。</p> -->
-
     <div class="container body-content">
+
         <div class="input-form">
             <fieldset class="u-full-width">
                 <div class="three columns">
@@ -46,17 +32,19 @@
                     <input class="u-full-width" type="text" id="functionName" value="my_function" />
                 </div>
                 <div class="three columns">
-                    <label for="outputType">函数返回值类型</label>
-                    <select class="u-full-width" id="outputType">
-                        <option value="void">空类型--->None      </option>
-                        <option value="bool">布尔类型--->Boolean   </option>
-                        <option value="int">整数类型--->Integer    </option>
-                        <option value="float">浮点数--->Float    </option>
-                        <option value="string">字符串类型--->String   </option>
-                        <option value="bytes">字节类型--->Bytes    </option>
-                        <option value="tuple">元组类型--->Tuple    </option>
-                        <option value="list">列表类型--->List      </option>
-                        <option value="dict">字典类型--->Dictionary  </option>
+                    <label for="numInputs">输入参数数量</label>
+                    <select input class="u-full-width" id="numInputs" value="0">
+                        <option value=0>0</option>
+                        <option value=1>1</option>
+                        <option value=2>2</option>
+                        <option value=3>3</option>
+                        <option value=4>4</option>
+                        <option value=5>5</option>
+                        <option value=6>6</option>
+                        <option value=7>7</option>
+                        <option value=8>8</option>
+                        <option value=9>9</option>
+                        <option value=10>10</option>
                     </select>
                 </div>
                 <div class="three columns">
@@ -64,8 +52,18 @@
                     <input class="u-full-width" type="text" id="outputName" value="ret_val" />
                 </div>
                 <div class="three columns">
-                    <label for="numInputs">输入参数数量</label>
-                    <input class="u-full-width" type="number" id="numInputs" value="0" min="0" max="10" />
+                    <label for="outputType">函数返回值类型</label>
+                    <select class="u-full-width" id="outputType">
+                        <option value="void">空--->None      </option>
+                        <option value="bool">布尔--->Boolean   </option>
+                        <option value="int">整数--->Integer    </option>
+                        <option value="float">浮点数--->Float    </option>
+                        <option value="string">字符串--->String   </option>
+                        <option value="bytes">字节--->Bytes    </option>
+                        <option value="tuple">元组--->Tuple    </option>
+                        <option value="list">列表--->List      </option>
+                        <option value="dict">字典--->Dictionary  </option>
+                    </select>
                 </div>
                 <div class="inputsArea"></div>
             </fieldset>
@@ -85,11 +83,17 @@
         </div>
         <hr>
         <div class="u-full-width">
+            <p> 添加一个 C 函数到 MicroPython 中有如下三个步骤，分别对应 Output 中的三个动作：</p>
+            <ol>
+                <li>将自动生成的 <strong>同名 C 语言函数</strong> 拷贝到 <strong>port/modules/user/moduserfunc.c</strong> 文件</li>
+                <li>将该函数注册到用户模块列表 <strong>(_globals_table[])</strong></li>
+                <li>追加关联该函数的 QSTR 到 <strong>port/genhdr/qstrdefs.generated.h</strong> 文件</li>
+              </ol>
             <label for="codeOutput">Output</label>
             <pre><code class="language-c" id="codeOutput"></code></pre>
         </div>
     </div>
-    <div class="container footer">
+    <div class="container footer" style="background-color:#FFA500;clear:both;text-align:center;">
         <footer>
             <hr>
             <p>&copy; 2019 - <a href="https://github.com/SummerGGift" target="_blank">我夏了夏天</a></p>

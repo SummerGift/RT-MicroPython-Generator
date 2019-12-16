@@ -17,6 +17,7 @@ function parseNumInputs() {
 function generateInputOptions() {
     $(".inputsArea").empty();
     var numInputs = parseNumInputs();
+    console.log("input", numInputs)
     if (numInputs == null) return false;
 
     htmlStr = '';
@@ -27,12 +28,12 @@ function generateInputOptions() {
         htmlStr += '<div class="three columns">';
         htmlStr += '<label for="outputType">Input '+(inputVal+1)+' Type</label>';
         htmlStr += '<select class="u-full-width" id="inputType'+(inputVal+1)+'" oninput="generateCode">';
-        htmlStr += '<option value="bool">Boolean</option>';
-        htmlStr += '<option value="int">Integer</option>';
-        htmlStr += '<option value="float">Float</option>';
-        htmlStr += '<option value="stringnull">String, null terminated</option>';
-        htmlStr += '<option value="stringlen">String, with length</option>';
-        htmlStr += '<option value="list">List / Tuple</option>';
+        htmlStr += '<option value="bool">布尔--->Boolean</option>';
+        htmlStr += '<option value="int">整数--->Integer</option>';
+        htmlStr += '<option value="float">浮点数--->Float</option>';
+        htmlStr += '<option value="stringnull">以null结尾的字符串</option>';
+        htmlStr += '<option value="stringlen">字符串及其长度</option>';
+        htmlStr += '<option value="list">列表/元组--->List/Tuple</option>';
         // htmlStr += '<option value="dict">Dictionary</option>';
         htmlStr += '</select>';
         htmlStr += '</div>';
@@ -69,6 +70,31 @@ function checkArgName(nameStr) {
     return null;
 }
 
+function compute_hash(qstr, bytes_hash) {
+    console.log(qstr)
+    var hash = 5381
+
+    for (x in qstr) {
+        hash = (hash * 33) ^ qstr[x].charCodeAt()
+    }
+    return (hash & ((1 << (8 * bytes_hash)) - 1)) || 1
+}
+
+function PrefixZero(num, length) {
+    return (Array(length).join('0') + num).slice(-length);
+}
+
+function gen_qstr(qstr) {
+    var hash = compute_hash(qstr, 1)
+
+    console.log(hash)
+    console.log(qstr.length)
+
+    qlen_str = qstr.length
+    qhash_str = hash
+    return "QDEF(MP_QSTR_" + qstr + ", (const byte*)\"\\x" + PrefixZero(qhash_str.toString(16),2) +"\\x"+ PrefixZero(qlen_str.toString(16),2) + "\" \"" + qstr + '")'
+}
+
 // Retrieves a dictionary of all of the input parameters
 // Returns null if invalid data found
 function getFormDict() {
@@ -82,6 +108,9 @@ function getFormDict() {
         $("#codeOutput").text("ERROR: Function name - "+valid);
         return null;
     }
+
+    console.log(gen_qstr(outDict['function']))
+    outDict[outDict['function']] = gen_qstr(outDict['function'])
 
     // Get output data
     outDict['output'] = {
@@ -122,10 +151,12 @@ function generateCode() {
     var formDict = getFormDict();
     if (formDict == null) return;
     var showExamples = $("#showExamples")[0].checked;
+
+
+    console.log(formDict[formDict['function']])
+
     outputCode = '';
-    
-    outputCode += '#include "py/runtime.h"\n';
-    outputCode += '\n';
+    outputCode += '第一步：请将下列函数拷贝到文件中\n';
 
     // Create function initialiser
     outputCode += 'STATIC mp_obj_t '+formDict['function']+'(';
@@ -305,17 +336,25 @@ function generateCode() {
         outputCode += formDict['function']+'_obj, '+numInputs+', '+numInputs+', '+formDict['function']+');';
     }
 
+
     // Map table
     outputCode += '\n';
-    outputCode += '// Copy the uncommented line into your map table\n';
-    outputCode += '// STATIC const mp_rom_map_elem_t my_module_globals_table[] = {\n';
-    outputCode += INDENT + '// { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_builtins) },\n';
+    outputCode += '第二步：请将下面 <未注释> 的代码行拷贝到模块注册列表中\n';
+    outputCode += '// STATIC const mp_rom_map_elem_t my_module_globals_table[] = { <----- 在模块中找到这个列表\n';
+    outputCode += '//' + INDENT + '{ MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_builtins) },\n';
+
+    outputCode += '//----------------------------------------------------------------------------------------------------\n';
     outputCode += INDENT + '{ MP_ROM_QSTR(MP_QSTR_'+formDict['function']+'), MP_ROM_PTR(&'+formDict['function']+'_obj) },\n'
+    outputCode += '//----------------------------------------------------------------------------------------------------\n';
+
+
     if (showExamples) {
         outputCode += INDENT + '// Example constant\n';
         outputCode += INDENT + '{ MP_ROM_QSTR(MP_QSTR_EXAMPLE_CONST), MP_ROM_INT(123) },\n'
     }
-    outputCode += '// };';
+    outputCode += '// };' + '\n' + '\n';
+    outputCode += "第三步：请将下面的 QSTR 代码追加到 <port/genhdr/qstrdefs.generated.h> 文件后" + '\n'
+    outputCode += formDict[formDict['function']]  + '\n';
 
     $("#codeOutput").text(outputCode);
 
