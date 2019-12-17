@@ -135,6 +135,14 @@ MP_DEFINE_CONST_FUN_OBJ_2(add_obj, add);
                 <br><br>
                 编写完功能函数后，还要记得注册你的函数到模块中，其实也就是将你的函数添加到模块列表 <code>_globals_table[]</code> 中。至于为什么要添加 QSTR，不必太在意，
                 这是一种在 MicroPython 中节省字符串占用空间的机制，根据提示添加相应的代码就可以了。
+                <br><br>
+                最终使用 Python 调用 C 函数的效果如下：
+                <pre><code class="language-c" id="application"> 
+>>> import userfunc
+>>> userfunc.add(666,777)
+1443
+                </code></pre>
+
             </p>
             <h3>2. 如何添加一个属于自己的模块呢？</h3>
             <p>
