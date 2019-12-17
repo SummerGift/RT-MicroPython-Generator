@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/skeleton.css" />
     <link rel="stylesheet" type="text/css" href="css/prism.css"  />
     <link rel="stylesheet" type="text/css" href="css/mcg.css" />
+    <link rel="stylesheet" type="text/css" href="css/markdown.css" />
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/jquery.scrollTo.js"></script>
     <script src="js/prism.js"></script>
@@ -93,6 +94,57 @@
             <label for="codeOutput">Output</label>
             <pre><code class="language-c" id="codeOutput"></code></pre>
         </div>
+        <hr>
+        <div class="detail-introduce">
+            <h1 style="text-align:center;"> C 绑定添加原理介绍 </h1>
+            <h3>1. 将 C 函数转化为 MicroPython 函数的关键点是什么？</h3>
+            <p>
+                C 语言和 Python 是两种完全不同的语言，如何使用 Python 来调用 C 语言所实现的函数是许多小伙伴非常疑惑的地方。
+                其实这个问题的关键点就在于如何用 C 语言的形式在 Python 中表述函数的入参和出参，我举一个例子来讲解这个问题，
+                请观察下列 Python 函数：
+
+                <pre><code class="language-c" id="application"> 
+def add(a, b):
+    return a + b
+                </code></pre>
+
+                这个函数输入两个参数，输出一个参数。此时如果我们能用 C 语言表示该 Python 函数的输入输出参数，我们就可以将一
+                个实现该功能的 C 语言的函数对接到 MicroPython 中，我们假设这些参数的类型都为整形，通过自动生成器我们可以得到
+                如下样板函数：
+
+                <pre><code class="language-c" id="application"> 
+STATIC mp_obj_t add(
+    mp_obj_t arg_1_obj,
+    mp_obj_t arg_2_obj) {
+    mp_int_t arg_1 = mp_obj_get_int(arg_1_obj);   /* 通过 Python 获取的第一个整形参数 arg_1 */
+    mp_int_t arg_2 = mp_obj_get_int(arg_2_obj);   /* 通过 Python 获取的第二个整形参数 arg_1 */
+    mp_int_t ret_val;
+
+    /* Your code start! */
+
+    ret_val = arg_1 + arg_2;  /* 在此处添加处理入参 arg_1 和 arg_2 的实现，并将结果赋给返回值 ret_val */
+
+    /* Your code end! */
+
+    return mp_obj_new_int(ret_val);               /* 向 python 返回整形参数 ret_val */
+}
+MP_DEFINE_CONST_FUN_OBJ_2(add_obj, add);
+                </code></pre>
+                生成器会帮我们处理好需要导出到 MicroPython 的函数的入参和出参，而我们只需要编写相应的代码来处理这些输入参数，并且把返回值赋给输出参数即可。
+                你可以通过包含头文件的方式，任意调用你先前编写的任意 C 函数来对输入参数进行处理，或者根据输入参数来执行相应的动作。
+                <br><br>
+                编写完功能函数后，还要记得注册你的函数到模块中，其实也就是将你的函数添加到模块列表 <code>_globals_table[]</code> 中。至于为什么要添加 QSTR，不必太在意，
+                这是一种在 MicroPython 中节省字符串占用空间的机制，根据提示添加相应的代码就可以了。
+            </p>
+            <h3>2. 如何添加一个属于自己的模块呢？</h3>
+            <p>
+                很多小伙伴想要添加属于自己的模块到 MicroPython 中，这个过程稍稍复杂，但也不难。我推荐你先将上述添加 C 函数的过程搞明白，
+                然后参考 PR <a href="https://github.com/RT-Thread-packages/micropython/pull/144" target="_blank">add module userfunc to MicroPython</a> 
+                来添加属于自己的模块，该 PR 实现了添加 <code>userfunc</code> 模块到 MicroPython 的功能，你可以按照同样的方式将自己编写的模块注册到 MicroPython 中，
+                要注意仔细查看这个 PR 中修改的 4 个文件，不要漏掉修改的细节。
+            </p>
+        </div>
+
     </div>
     <div class="container footer" style="background-color:#FFA500;clear:both;text-align:center;">
         <footer>
