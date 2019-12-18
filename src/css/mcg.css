@@ -1,0 +1,22 @@
+.container.header > h2 {
+    margin-top: 12px;
+    margin-bottom: 0px;
+}
+
+hr {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+footer > p {
+    font-size: 75%;
+    margin-bottom: 3px;
+}
+
+#dataInput {
+    height: 420px;
+}
+
+body {
+    scroll-behavior: smooth;
+}

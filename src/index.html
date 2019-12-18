@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="MicroPython, c, python, RT-Thread">
+    <title>RT-Thread Micropython C Generator</title>
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="css/prism.css"  />
+    <link rel="stylesheet" type="text/css" href="css/mcg.css" />
+    <link rel="stylesheet" type="text/css" href="css/markdown.css" />
+    <style>
+ 
+    </style>
+</head>
+<body>
+    <div class="container header">
+        <h2 style="text-align:center;">RT-Thread MicroPython C 绑定代码自动生成器</h2>
+        
+    </div>
+    <br>
+    
+    <div class="container body-content">
+        <p style="text-align:center;"><a href="https://github.com/RT-Thread-packages/micropython">
+            <img border="0" src="https://img.shields.io/github/stars/RT-Thread-packages/micropython.svg?style=social&label=Star" alt="micropython"></a><br />
+            &nbsp;&nbsp;&nbsp;&nbsp;如果觉得有帮助，请帮我们&nbsp;<a href="https://github.com/RT-Thread-packages/micropython" target="_blank">点亮小星星</a>，您的支持是我们前进的动力！
+        </p>
+        
+        <hr>
+
+        <div class="input-form">
+            <fieldset class="u-full-width">
+                <div class="three columns">
+                    <label for="functionName">函数名</label>
+                    <input class="u-full-width" type="text" id="functionName" value="my_function" />
+                </div>
+                <div class="three columns">
+                    <label for="numInputs">输入参数数量</label>
+                    <select input class="u-full-width" id="numInputs" value="0">
+                        <option value=0>0</option>
+                        <option value=1>1</option>
+                        <option value=2>2</option>
+                        <option value=3>3</option>
+                        <option value=4>4</option>
+                        <option value=5>5</option>
+                        <option value=6>6</option>
+                        <option value=7>7</option>
+                        <option value=8>8</option>
+                        <option value=9>9</option>
+                        <option value=10>10</option>
+                    </select>
+                </div>
+                <!-- <div class="three columns">
+                    <label for="outputName">函数返回值名称</label>
+                    <input class="u-full-width" type="text" id="outputName" value="ret_val" />
+                </div> -->
+                <div class="three columns">
+                    <label for="outputType">函数返回值类型</label>
+                    <select class="u-full-width" id="outputType">
+                        <option value="void">空--->None      </option>
+                        <option value="bool">布尔--->Boolean   </option>
+                        <option value="int">整数--->Integer    </option>
+                        <option value="float">浮点数--->Float    </option>
+                        <option value="string">字符串--->String   </option>
+                        <option value="bytes">字节--->Bytes    </option>
+                        <option value="tuple">元组--->Tuple    </option>
+                        <option value="list">列表--->List      </option>
+                        <option value="dict">字典--->Dictionary  </option>
+                    </select>
+                </div>
+            </fieldset>
+            <div class="inputsArea"></div>
+            <fieldset class="u-full-width">
+                <div class="three columns">
+                    <input type="checkbox" id="showExamples" value="Examples">
+                    <span class="label-body" id="showExamplesLabel">添加提示代码</span>
+                </div>
+                <div class="three columns"><p></p></div>
+                <div class="three columns">
+                    <input class="button-primary u-full-width" type="button" id="generateCode" value="点击生成 C 绑定代码" />
+                </div>
+                <div class="three columns">
+                    <input class="button-primary u-full-width" type="button" id="copyCode" value="点击复制代码" />
+                </div>
+            </fieldset>
+        </div>
+        <hr>
+        <div class="u-full-width">
+            <p> 添加一个 C 函数到 MicroPython 中有如下三个步骤，分别对应 Output 中的三个动作：</p>
+            <ol>
+                <li>将自动生成的 <strong>同名 C 语言函数</strong> 拷贝到 <strong>port/modules/user/moduserfunc.c</strong> 文件</li>
+                <li>将该函数注册到用户模块列表 <strong>(_globals_table[])</strong></li>
+                <li>追加关联该函数的 QSTR 到 <strong>port/genhdr/qstrdefs.generated.h</strong> 文件</li>
+              </ol>
+            <label for="codeOutput">Output</label>
+            <pre><code class="language-c" id="codeOutput"></code></pre>
+        </div>
+        <hr>
+        <div class="detail-introduce">
+            <h1 style="text-align:center;"> C 绑定添加原理介绍 </h1>
+            <h3>1. 将 C 函数转化为 MicroPython 函数的关键点是什么？</h3>
+            <p>
+                C 语言和 Python 是两种完全不同的语言，如何使用 Python 来调用 C 语言所实现的函数是许多小伙伴非常疑惑的地方。
+                其实这个问题的关键点就在于如何用 C 语言的形式在 Python 中表述函数的入参和出参，我举一个例子来讲解这个问题，
+                请观察下列 Python 函数：
+
+                <pre><code class="language-c" id="application"> 
+def add(a, b):
+    return a + b
+                </code></pre>
+
+                这个函数输入两个参数，输出一个参数。此时如果我们能用 C 语言表示该 Python 函数的输入输出参数，我们就可以将一
+                个实现该功能的 C 语言的函数对接到 MicroPython 中，我们假设这些参数的类型都为整形，通过自动生成器我们可以得到
+                如下样板函数：
+
+                <pre><code class="language-c" id="application"> 
+STATIC mp_obj_t add(
+    mp_obj_t arg_1_obj,
+    mp_obj_t arg_2_obj) {
+    mp_int_t arg_1 = mp_obj_get_int(arg_1_obj);   /* 通过 Python 获取的第一个整形参数 arg_1 */
+    mp_int_t arg_2 = mp_obj_get_int(arg_2_obj);   /* 通过 Python 获取的第二个整形参数 arg_1 */
+    mp_int_t ret_val;
+
+    /* Your code start! */
+
+    ret_val = arg_1 + arg_2;  /* 在此处添加处理入参 arg_1 和 arg_2 的实现，并将结果赋给返回值 ret_val */
+
+    /* Your code end! */
+
+    return mp_obj_new_int(ret_val);               /* 向 python 返回整形参数 ret_val */
+}
+MP_DEFINE_CONST_FUN_OBJ_2(add_obj, add);
+                </code></pre>
+                生成器会帮我们处理好需要导出到 MicroPython 的函数的入参和出参，而我们只需要编写相应的代码来处理这些输入参数，并且把返回值赋给输出参数即可。
+                你可以通过包含头文件的方式，任意调用你先前编写的任意 C 函数来对输入参数进行处理，或者根据输入参数来执行相应的动作。
+                <br><br>
+                编写完功能函数后，还要记得注册你的函数到模块中，其实也就是将你的函数添加到模块列表 <code>_globals_table[]</code> 中。至于为什么要添加 QSTR，不必太在意，
+                这是一种在 MicroPython 中节省字符串占用空间的机制，根据提示添加相应的代码就可以了。
+                <br><br>
+                最终使用 Python 调用 C 函数的效果如下：
+                <pre><code class="language-c" id="application"> 
+>>> import userfunc
+>>> userfunc.add(666,777)
+1443
+                </code></pre>
+
+            </p>
+            <h3>2. 如何添加一个属于自己的模块呢？</h3>
+            <p>
+                很多小伙伴想要添加属于自己的模块到 MicroPython 中，这个过程稍稍复杂，但也不难。我推荐你先将上述添加 C 函数的过程搞明白，
+                然后参考 PR <a href="https://github.com/RT-Thread-packages/micropython/pull/144" target="_blank">add module userfunc to MicroPython</a> 
+                来添加属于自己的模块，该 PR 实现了添加 <code>userfunc</code> 模块到 MicroPython 的功能，你可以按照同样的方式将自己编写的模块注册到 MicroPython 中，
+                要注意仔细查看这个 PR 中修改的 4 个文件，不要漏掉修改的细节。
+            </p>
+        </div>
+
+    </div>
+    <div class="container footer" style="background-color:#FFA500;clear:both;text-align:center;">
+        <footer>
+            <hr>
+            <p>&copy; 2019 - <a href="https://github.com/SummerGGift" target="_blank">我夏了夏天</a></p>
+            <p>
+                Powered by <a href="https://www.rt-thread.org/document/site/submodules/micropython/docs/introduction/" target="_blank">RT-Thread MicroPython</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="./js/mcg.js"></script>
+</body>
