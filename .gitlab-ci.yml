@@ -1,16 +1,17 @@
 image: node:alpine
 
-stages:
-  - deploy
 
-pages:
-  stage: deploy
-  only:
-    - master
+cache:
+  paths:
+  - node_modules/
+
+stages:
+  - test
+
+test_build:
+  stage: test
   script:
-    - npm install
-    - npm build
-    - mv dist public
-  artifacts:
-    paths:
-      - public
+   - npm install
+   - npm run build
+  tags:
+    - docker
