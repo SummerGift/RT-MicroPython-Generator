@@ -8,11 +8,9 @@ pages:
   only:
     - master
   script:
-    - mkdir public
-    - cp index.html public
-    - cp -r css public/
-    - cp -r js public/
-    - cp -r images public/
+    - npm install
+    - npm build
+    - mv dist public
   artifacts:
     paths:
       - public

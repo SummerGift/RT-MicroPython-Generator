@@ -7,7 +7,7 @@
     "build": "rm -rf dist && webpack --mode production",
     "dev": "webpack --mode development --watch & live-server ./dist",
     "serve": "live-server ./dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "rm -rf dist && webpack --mode production"
   },
   "repository": {
     "type": "git",
