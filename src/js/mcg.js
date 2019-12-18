@@ -1,3 +1,6 @@
+require('jquery.scrollto');
+require('prismjs');
+
 // Get number of inputs required, return null if invalid input
 function parseNumInputs() {
     const MAX_INPUTS = 10;
@@ -391,4 +394,13 @@ $(document).ready(function() {
     });
     $("#showExamples").change('input', generateCode);
     generateCode();
+
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?e8b2386aec0b7831b686a4468a635981";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+    })();
+
 });
