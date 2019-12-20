@@ -15,6 +15,6 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
-    "indent"           : [1, 4]
+    "indent"           : ["error", 4]
   }
 }
