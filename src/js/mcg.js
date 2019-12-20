@@ -3,7 +3,7 @@ const Prism = require('prismjs')
 const $ = require('jquery')
 
 // Get number of inputs required, return null if invalid input
-function parseNumInputs() {
+function parseNumInputs () {
   const MAX_INPUTS = 10
   var numInputs = parseInt($('#numInputs').val())
   if (isNaN(numInputs)) {
@@ -18,7 +18,7 @@ function parseNumInputs() {
 }
 
 // Creates the inputs for setting input parameters
-function generateInputOptions() {
+function generateInputOptions () {
   $('.inputsArea').empty()
   var numInputs = parseNumInputs()
   console.log('input', numInputs)
@@ -56,7 +56,7 @@ function generateInputOptions() {
 }
 
 // Copies the code box contents to clipboard
-function copyCode() {
+function copyCode () {
   var copyText = document.getElementById('_hiddenCopyText_')
   copyText.select()
   document.execCommand('copy')
@@ -64,7 +64,7 @@ function copyCode() {
 
 // Verifies whether an argument name is valid C
 // Returns a string if an error found, otherwise returns null
-function checkArgName(nameStr) {
+function checkArgName (nameStr) {
   if (nameStr.length === 0) return 'Name cannot be empty'
   else if (nameStr.length > 99) return 'Name too long'
   else if (!/^[a-z_][a-z0-9_]*$/i.test(nameStr)) {
@@ -74,7 +74,7 @@ function checkArgName(nameStr) {
   return null
 }
 
-function computeHash(qstr, bytesHash) {
+function computeHash (qstr, bytesHash) {
   console.log(qstr)
   var hash = 5381
 
@@ -84,11 +84,11 @@ function computeHash(qstr, bytesHash) {
   return (hash & ((1 << (8 * bytesHash)) - 1)) || 1
 }
 
-function PrefixZero(num, length) {
+function PrefixZero (num, length) {
   return (Array(length).join('0') + num).slice(-length)
 }
 
-function genQstr(qstr) {
+function genQstr (qstr) {
   var hash = computeHash(qstr, 1)
 
   console.log(hash)
@@ -101,7 +101,7 @@ function genQstr(qstr) {
 
 // Retrieves a dictionary of all of the input parameters
 // Returns null if invalid data found
-function getFormDict() {
+function getFormDict () {
   var outDict = {}
   var valid
 
@@ -148,7 +148,7 @@ function getFormDict() {
 }
 
 // Function that generates the output code, and puts it in the relevant textbox
-function generateCode() {
+function generateCode () {
   // Setup
   const INDENT = '    '
   const MAX_DISCRETE_ARGS = 3
