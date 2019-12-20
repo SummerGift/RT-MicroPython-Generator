@@ -99,8 +99,12 @@
         </div>
         <hr>
         <div class="detail-introduce">
-            <h1 style="text-align:center;"> C 绑定添加原理介绍 </h1>
-            <h3>1. 将 C 函数转化为 MicroPython 函数的关键点是什么？</h3>
+            <h1 style="text-align:center;"> 为 MicroPython 扩展 C 模块 </h1>
+            <p>当使用原生 MicroPython 进行开发时，你可能会遇到这样一些限制，比如官方没有实现自己想要的功能，或者你觉得这些实现不符合自己的工作需求。
+                此时，添加自己的 C 模块到 MicroPython 中是一个不错的选择，你可以按照自己的想法，设计适合自己的 Python 函数调用。
+            </p>
+
+            <h3>1. Python 调用 C 函数的实现原理</h3>
             <p>
                 C 语言和 Python 是两种完全不同的语言，如何使用 Python 来调用 C 语言所实现的函数是许多小伙伴非常疑惑的地方。
                 其实这个问题的关键点就在于如何用 C 语言的形式在 Python 中表述函数的入参和出参，我举一个例子来讲解这个问题，
