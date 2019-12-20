@@ -4,10 +4,10 @@
   "description": "A single-page site for generating C code for Micropython function implementation.",
   "private": true,
   "scripts": {
-    "build": "rm -rf dist && webpack --mode production",
+    "build": "eslint src/js/mcg.js && shx rm -rf dist && webpack --mode production",
     "dev": "webpack --mode development --watch & live-server ./dist",
-    "serve": "live-server ./dist",
-    "test": "rm -rf dist && webpack --mode production"
+    "start": "live-server ./dist",
+    "test": "shx rm -rf dist && webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,16 @@
     "@babel/preset-env": "^7.7.6",
     "babel-loader": "^8.0.6",
     "copy-webpack-plugin": "^5.1.1",
+    "eslint": "^6.7.2",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "expose-loader": "^0.7.5",
     "live-server": "^1.2.1",
     "nodemon-webpack-plugin": "^4.2.1",
+    "shx": "^0.3.2",
     "webpack": "^4.41.3",
     "webpack-cli": "^3.3.10"
   },
