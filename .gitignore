@@ -2,3 +2,4 @@ dist/
 node_modules
 .vscode/settings.json
 docs/.vscode/settings.json
+src/.vscode/settings.json
