@@ -99,12 +99,8 @@
         </div>
         <hr>
         <div class="detail-introduce">
-            <h1 style="text-align:center;"> 为 MicroPython 扩展 C 模块 </h1>
-            <p>当使用原生 MicroPython 进行开发时，你可能会遇到这样一些限制，比如官方没有实现自己想要的功能，或者你觉得这些实现不符合自己的工作需求。
-                此时，添加自己的 C 模块到 MicroPython 中是一个不错的选择，你可以按照自己的想法，设计适合自己的 Python 函数调用。
-            </p>
-
-            <h3>1. Python 调用 C 函数的实现原理</h3>
+            <h1 style="text-align:center;"> C 绑定添加原理介绍 </h1>
+            <h3>1. 将 C 函数转化为 MicroPython 函数的关键点是什么？</h3>
             <p>
                 C 语言和 Python 是两种完全不同的语言，如何使用 Python 来调用 C 语言所实现的函数是许多小伙伴非常疑惑的地方。
                 其实这个问题的关键点就在于如何用 C 语言的形式在 Python 中表述函数的入参和出参，我举一个例子来讲解这个问题，
@@ -137,8 +133,8 @@ STATIC mp_obj_t add(
 }
 MP_DEFINE_CONST_FUN_OBJ_2(add_obj, add);
                 </code></pre>
-                生成器会处理好需要导出到 MicroPython 的函数的入参和出参，而开发者只需要编写相应的代码来处理这些输入参数，并且把返回值赋给输出参数即可。
-                通过包含头文件的方式，可以调用先前编写的 C 函数来对输入参数进行处理，或者根据输入参数来执行相应的动作，添加控制硬件的驱动的原理也是一样的。
+                生成器会帮我们处理好需要导出到 MicroPython 的函数的入参和出参，而我们只需要编写相应的代码来处理这些输入参数，并且把返回值赋给输出参数即可。
+                你可以通过包含头文件的方式，任意调用你先前编写的任意 C 函数来对输入参数进行处理，或者根据输入参数来执行相应的动作。
                 <br><br>
                 编写完功能函数后，还要记得注册你的函数到模块中，其实也就是将你的函数添加到模块列表 <code>_globals_table[]</code> 中。至于为什么要添加 QSTR，不必太在意，
                 这是一种在 MicroPython 中节省字符串占用空间的机制，根据提示添加相应的代码就可以了。
@@ -164,7 +160,7 @@ MP_DEFINE_CONST_FUN_OBJ_2(add_obj, add);
     <div class="container footer" style="background-color:#FFA500;clear:both;text-align:center;">
         <footer>
             <hr>
-            <p>&copy; 2019 - <a href="https://github.com/SummerGGift" target="_blank">我夏了夏天</a></p>
+            <p>&copy; 2019 - <a href="https://github.com/SummerLife" target="_blank">SummerGift</a></p>
             <p>
                 Powered by <a href="https://www.rt-thread.org/document/site/submodules/micropython/docs/introduction/" target="_blank">RT-Thread MicroPython</a>
             </p>
@@ -172,4 +168,13 @@ MP_DEFINE_CONST_FUN_OBJ_2(add_obj, add);
     </div>
 
     <script src="./js/mcg.js"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?e8b2386aec0b7831b686a4468a635981";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </body>
