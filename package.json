@@ -40,6 +40,6 @@
   "dependencies": {
     "jquery": "^3.5.0",
     "jquery.scrollto": "^2.1.2",
-    "prismjs": "^1.17.1"
+    "prismjs": "^1.27.0"
   }
 }
